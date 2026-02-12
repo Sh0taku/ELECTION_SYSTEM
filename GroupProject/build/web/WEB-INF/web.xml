@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    
+    <servlet>
+        <servlet-name>StudentLoginServlet</servlet-name>
+        <servlet-class>com.election.servlets.StudentLoginServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.election.servlets.LogoutServlet</servlet-class> <!-- FIXED HERE -->
+    </servlet>
+    
+    <servlet>
+        <servlet-name>StudentRegisterServlet</servlet-name>
+        <servlet-class>com.election.servlets.StudentRegisterServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>VoteServlet</servlet-name>
+        <servlet-class>com.election.servlets.VoteServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>StudentServlet</servlet-name>
+        <servlet-class>com.election.servlets.StudentServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <servlet-class>com.election.servlets.AdminLoginServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>AdminLoginServlet2</servlet-name>
+        <servlet-class>com.election.servlets.AdminLoginServlet2</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>StudentLoginServlet</servlet-name>
+        <url-pattern>/StudentLoginServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>StudentRegisterServlet</servlet-name>
+        <url-pattern>/StudentRegisterServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <url-pattern>/AdminLoginServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>VoteServlet</servlet-name>
+        <url-pattern>/VoteServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>StudentServlet</servlet-name>
+        <url-pattern>/StudentServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>AdminLoginServlet2</servlet-name>
+        <url-pattern>/AdminLoginServlet2</url-pattern>
+    </servlet-mapping>
+    
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+</web-app>
