@@ -1,6 +1,6 @@
 <%--
     Document : studentdashboard
-    Created on : Jan 10, 2026, 9:12:16 AM
+    Created on : DEC, 2025, 9:12:16 AM
     Author : Emir
 --%>
 
@@ -16,20 +16,20 @@
 <%@page import="java.util.*" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%
-    // Get student from session
+    // Git student
     Student student = (Student) session.getAttribute("student");
     if (student == null) {
         response.sendRedirect("../login.jsp");
         return;
     }
 
-    // Initialize DAOs
+    // Git DAO
     ElectionDAO electionDAO = new ElectionDAO();
     CandidateDAO candidateDAO = new CandidateDAO();
     VoteDAO voteDAO = new VoteDAO();
     StudentDAO studentDAO = new StudentDAO();
 
-    // Get all elections from database
+    // Git election db
     List<Election> allElections = new ArrayList<Election>();
     try {
         allElections = electionDAO.getAllElections();
@@ -65,16 +65,16 @@
         }
     }
 
-    // Get statistics from database
+    
     int totalStudents = 0;
     try {
         totalStudents = studentDAO.getTotalStudents();
     } catch (Exception e) {
         e.printStackTrace();
-        totalStudents = 0; // Default if error
+        totalStudents = 0;
     }
 
-    // Get voting history for current student
+    
     boolean hasVotedInCurrent = false;
     List<Vote> votingHistory = new ArrayList<Vote>();
     if (ongoingElection != null) {
@@ -86,7 +86,7 @@
         }
     }
 
-    // Date formatter for display
+  
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
     SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd MMM yyyy HH:mm");
 %>
@@ -382,7 +382,7 @@
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+    <!-- Left Nav -->
     <div class="nav-panel">
         <div class="student-info">
             <div class="student-name"><%= student.getName() %></div>
@@ -399,9 +399,9 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+        
+    <!-- Main -->
     <div class="main-content">
-        <!-- Top Header -->
         <div class="top-header">
             <div class="page-title">Student Dashboard</div>
             <button class="logout-btn" onclick="window.location.href='<%= request.getContextPath() %>/LogoutServlet'">
@@ -409,15 +409,14 @@
             </button>
         </div>
 
-        <!-- Dashboard Content -->
+
         <div class="dashboard-content">
-            <!-- Welcome Section -->
             <div class="welcome-section">
                 <h1 class="welcome-title">Hello <%= student.getName() %>!</h1>
                 <p class="welcome-subtitle">Welcome to UITM Online Election System</p>
             </div>
 
-            <!-- Interactive Container - Vote Now Button -->
+                
             <div class="container interactive-container">
                 <h2 class="container-title">Ongoing Election</h2>
                 <% if (ongoingElection != null) { %>
@@ -459,7 +458,7 @@
                         String statusText = "";
                         String electionStatus = election.getStatus();
                         
-                        // FIXED: Replaced switch statement with if-else for Java 1.5 compatibility
+                        
                         if ("ONGOING".equals(electionStatus)) {
                             statusClass = "status-ongoing";
                             statusText = "Ongoing";
@@ -501,8 +500,7 @@
 
             <!-- Live Results -->
             <% if (ongoingElection != null && !candidates.isEmpty()) { 
-                // Sort candidates by vote count (descending)
-                List<Candidate> sortedCandidates = new ArrayList<Candidate>(candidates);
+                             List<Candidate> sortedCandidates = new ArrayList<Candidate>(candidates);
                 Collections.sort(sortedCandidates, new Comparator<Candidate>() {
                     public int compare(Candidate c1, Candidate c2) {
                         return Integer.compare(c2.getVoteCount(), c1.getVoteCount());

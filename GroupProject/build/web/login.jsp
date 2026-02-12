@@ -1,8 +1,10 @@
+<!DOCTYPE html>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.election.dao.*" %>
 <%@page import="com.election.beans.*" %>
 <%@page import="java.util.*" %>
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>UITM Election System - Login</title>
@@ -48,7 +50,7 @@
             background-color: #3F72AF;
         }
         
-       
+        
         .container {
             display: flex;
             width: 900px;
@@ -135,7 +137,7 @@
             font-size: 16px;
         }
         
-        /* Buttons------------------ */
+        /* Butang------------------ */
         .login-button {
             width: 100%;
             padding: 12px;
@@ -213,9 +215,8 @@
         </div>
     </div>
     
-    <!-- Main Content -->
+
     <div class="container">
-        <!-- Left Side - Image -->
         <div class="left-side">
             <div class="image-box">
                 <h2>UITM Election System</h2>
@@ -297,6 +298,7 @@
     </div>
     
     <script>
+        
 function checkForm(form) {
     const inputs = form.querySelectorAll('input[required]');
     
