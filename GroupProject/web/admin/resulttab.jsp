@@ -20,7 +20,8 @@ Author: Admin
 <%@page import="com.election.dao.ElectionDAO" %>
 <%@page import="com.election.dao.CandidateDAO" %>
 <%
-// Check admin session
+
+    
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -30,15 +31,18 @@ if (admin == null) {
 String message = "";
 String messageType = "";
 
-// Get election ID from parameter
+
+
 int selectedElectionId = 0;
 try {
     selectedElectionId = Integer.parseInt(request.getParameter("electionId"));
 } catch (NumberFormatException e) {
-    // Use default election or first available
+
+    
 }
 
-// Fetch elections for dropdown
+
+
 List<Election> allElections = new ArrayList<Election>();
 Election selectedElection = null;
 Connection conn = null;
@@ -49,7 +53,8 @@ ResultSet rs = null;
 try {
     conn = DBConnection.getConnection();
     
-    // Get all elections
+    
+    
     String electionSql = "SELECT * FROM ELECTIONS ORDER BY END_DATE DESC, START_DATE DESC";
     pstmt = conn.prepareStatement(electionSql);
     rs = pstmt.executeQuery();
@@ -65,13 +70,15 @@ try {
         );
         allElections.add(election);
         
-        // If no election selected, pick first one
+  
+        
         if (selectedElection == null && selectedElectionId == 0) {
             selectedElection = election;
             selectedElectionId = election.getElectionId();
         }
         
-        // Find selected election
+    
+        
         if (selectedElectionId == election.getElectionId()) {
             selectedElection = election;
         }
@@ -86,7 +93,8 @@ try {
     try { if (pstmt != null) pstmt.close(); } catch (Exception e) {}
 }
 
-// Fetch results for selected election
+
+
 List<Candidate> candidates = new ArrayList<Candidate>();
 int totalVotes = 0;
 int totalVoters = 0;
@@ -94,7 +102,8 @@ List<String> topCandidates = new ArrayList<String>();
 
 if (selectedElection != null) {
     try {
-        // Get candidates for this election
+    
+        
         String candidateSql = "SELECT * FROM CANDIDATES WHERE ELECTION_ID = ? ORDER BY VOTE_COUNT DESC, POSITION";
         pstmt = conn.prepareStatement(candidateSql);
         pstmt.setInt(1, selectedElectionId);
@@ -113,7 +122,8 @@ if (selectedElection != null) {
             candidates.add(candidate);
             totalVotes += candidate.getVoteCount();
             
-            // Track top 3 candidates
+            
+            
             if (topCandidates.size() < 3) {
                 String name = candidate.getCandidateName();
                 if (name == null || name.isEmpty()) {
@@ -123,7 +133,8 @@ if (selectedElection != null) {
             }
         }
         
-        // Get total voters who voted in this election
+      
+        
         String voterSql = "SELECT COUNT(DISTINCT STUDENT_ID) FROM VOTES WHERE ELECTION_ID = ?";
         pstmt = conn.prepareStatement(voterSql);
         pstmt.setInt(1, selectedElectionId);
@@ -133,7 +144,8 @@ if (selectedElection != null) {
             totalVoters = rs.getInt(1);
         }
         
-        // Get total eligible students
+     
+        
         String eligibleSql = "SELECT COUNT(*) FROM STUDENTS";
         pstmt = conn.prepareStatement(eligibleSql);
         rs = pstmt.executeQuery();
@@ -142,13 +154,15 @@ if (selectedElection != null) {
             totalEligible = rs.getInt(1);
         }
         
-        // Calculate voting percentage
+      
+        
         double votingPercentage = 0;
         if (totalEligible > 0) {
             votingPercentage = (totalVoters * 100.0) / totalEligible;
         }
         
-        // Store in request for use in JSP
+      
+        
         request.setAttribute("totalVoters", totalVoters);
         request.setAttribute("totalEligible", totalEligible);
         request.setAttribute("votingPercentage", String.format("%.1f", votingPercentage));
@@ -160,12 +174,14 @@ if (selectedElection != null) {
     }
 }
 
-// Check if election is ended
+
+
 boolean isElectionEnded = selectedElection != null && "ENDED".equals(selectedElection.getStatus());
 boolean isElectionOngoing = selectedElection != null && "ONGOING".equals(selectedElection.getStatus());
 boolean canShowFullResults = isElectionEnded || (admin != null); // Admins can see all results
 
-// Get positions for grouping
+
+
 Map<String, List<Candidate>> candidatesByPosition = new HashMap<String, List<Candidate>>();
 for (Candidate candidate : candidates) {
     String position = candidate.getPosition();
@@ -179,12 +195,14 @@ for (Candidate candidate : candidates) {
     candidatesByPosition.get(position).add(candidate);
 }
 
-// Get winner for each position
+
+
 Map<String, Candidate> winnersByPosition = new HashMap<String, Candidate>();
 for (Map.Entry<String, List<Candidate>> entry : candidatesByPosition.entrySet()) {
     List<Candidate> posCandidates = entry.getValue();
     if (!posCandidates.isEmpty()) {
-        // Sort by vote count descending
+    
+        
         Collections.sort(posCandidates, new Comparator<Candidate>() {
             public int compare(Candidate c1, Candidate c2) {
                 return Integer.compare(c2.getVoteCount(), c1.getVoteCount());
@@ -202,7 +220,8 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
 <head>
     <title>Election Results - UITM Election System</title>
     <style>
-        /* Same CSS structure as other tabs */
+      
+        
         * {
             margin: 0;
             padding: 0;
@@ -216,7 +235,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             height: 100vh;
         }
 
-        /* Left Navigation Panel */
+      
         .nav-panel {
             width: 250px;
             background-color: #112D4E;
@@ -260,14 +279,14 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             color: white;
         }
 
-        /* Main Content Area */
+    
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header */
+     
         .top-header {
             background-color: white;
             padding: 15px 30px;
@@ -296,14 +315,14 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             background-color: #112D4E;
         }
 
-        /* Results Content */
+      
         .results-content {
             padding: 30px;
             overflow-y: auto;
             flex: 1;
         }
 
-        /* Message Alert */
+     
         .message-alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -329,7 +348,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             border: 1px solid #ef6c00;
         }
 
-        /* Election Selector */
+  
         .election-selector {
             background-color: white;
             padding: 20px;
@@ -373,7 +392,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             background-color: #112D4E;
         }
 
-        /* Results Cards */
+      
         .card {
             background-color: white;
             border-radius: 10px;
@@ -390,7 +409,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             padding-bottom: 10px;
         }
 
-        /* Summary Stats */
+    
         .summary-stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -418,7 +437,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             font-size: 12px;
         }
 
-        /* Results Table */
+   
         .results-table {
             width: 100%;
             border-collapse: collapse;
@@ -444,7 +463,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             background-color: #F9F7F7;
         }
 
-        /* Winner badge */
+     
         .winner-badge {
             background-color: #2e7d32;
             color: white;
@@ -455,7 +474,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             margin-left: 5px;
         }
 
-        /* Position header */
+    
         .position-header {
             background-color: #3F72AF;
             color: white;
@@ -465,7 +484,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             font-weight: bold;
         }
 
-        /* Vote bar */
+      
         .vote-bar-container {
             width: 100%;
             background-color: #f0f0f0;
@@ -487,7 +506,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             min-width: 30px;
         }
 
-        /* Chart container */
+     
         .chart-container {
             display: flex;
             align-items: flex-end;
@@ -531,7 +550,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             color: #112D4E;
         }
 
-        /* Status badges */
+   
         .status-badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -558,7 +577,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             border: 1px solid #c62828;
         }
 
-        /* No data */
+
         .no-data {
             text-align: center;
             padding: 30px;
@@ -566,7 +585,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             font-style: italic;
         }
 
-        /* Export buttons */
+    
         .export-buttons {
             display: flex;
             gap: 10px;
@@ -592,15 +611,9 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             background-color: #1b5e20;
         }
 
-        .export-btn.print {
-            background-color: #3F72AF;
-        }
+        
 
-        .export-btn.print:hover {
-            background-color: #112D4E;
-        }
-
-        /* Winner announcement */
+        
         .winner-announcement {
             background-color: #e1f7e1;
             border: 2px solid #2e7d32;
@@ -625,7 +638,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -644,15 +657,13 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
         </div>
     </div>
 
-    <!-- Main Content -->
+  
     <div class="main-content">
-        <!-- Top Header -->
         <div class="top-header">
             <div class="page-title">Election Results</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Results Content -->
         <div class="results-content">
             <% if (!message.isEmpty()) { %>
             <div class="message-alert <%= messageType %>">
@@ -660,7 +671,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
             <% } %>
 
-            <!-- Election Selector -->
+     
             <div class="election-selector">
                 <div class="selector-title">Select Election to View Results</div>
                 <form class="selector-form" method="GET" action="resulttab.jsp">
@@ -683,7 +694,6 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
 
             <% if (selectedElection != null) { %>
-            <!-- Election Info -->
             <div class="card">
                 <h2 class="card-title">
                     <%= selectedElection.getTitle() %>
@@ -705,7 +715,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
                 <% } %>
             </div>
 
-            <!-- Summary Statistics -->
+
             <div class="card">
                 <h2 class="card-title">Election Summary</h2>
                 <div class="summary-stats">
@@ -729,7 +739,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
 
             <% if (!isElectionEnded) { %>
-            <!-- Warning for ongoing/upcoming elections -->
+
             <div class="message-alert warning">
                 <strong>Note:</strong> This election is <%= selectedElection.getStatus() %>. 
                 <% if (isElectionOngoing) { %>
@@ -742,7 +752,7 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             <% } %>
 
             <% if (!candidates.isEmpty()) { %>
-            <!-- Winners Announcement (for ended elections) -->
+
             <% if (isElectionEnded && !winnersByPosition.isEmpty()) { %>
             <div class="winner-announcement">
                 <div class="winner-title">🏆 ELECTION WINNERS 🏆</div>
@@ -762,17 +772,20 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
             <% } %>
 
-            <!-- Detailed Results by Position -->
+        
+            
             <% for (Map.Entry<String, List<Candidate>> entry : candidatesByPosition.entrySet()) { 
                 List<Candidate> posCandidates = entry.getValue();
-                // Sort by vote count descending
+             
+                
                 Collections.sort(posCandidates, new Comparator<Candidate>() {
                     public int compare(Candidate c1, Candidate c2) {
                         return Integer.compare(c2.getVoteCount(), c1.getVoteCount());
                     }
                 });
                 
-                // Find max votes for percentage calculation
+            
+                
                 int maxVotes = 0;
                 for (Candidate c : posCandidates) {
                     if (c.getVoteCount() > maxVotes) {
@@ -802,13 +815,15 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
                                 candidateName = "Candidate " + candidate.getCandidateId();
                             }
                             
-                            // Calculate percentage
+                        
+                            
                             double percentage = 0;
                             if (totalVotes > 0) {
                                 percentage = (candidate.getVoteCount() * 100.0) / totalVotes;
                             }
                             
-                            // Calculate bar width
+                          
+                            
                             int barWidth = 0;
                             if (maxVotes > 0) {
                                 barWidth = (int) ((candidate.getVoteCount() * 100.0) / maxVotes);
@@ -852,13 +867,15 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
             <% } %>
 
-            <!-- Simple Bar Chart -->
+
+            
             <% if (candidates.size() <= 10) { %>
             <div class="card">
                 <h2 class="card-title">Vote Distribution</h2>
                 <div class="chart-container">
                     <% 
-                    // Sort candidates by vote count for chart
+  
+                        
                     List<Candidate> chartCandidates = new ArrayList<Candidate>(candidates);
                     Collections.sort(chartCandidates, new Comparator<Candidate>() {
                         public int compare(Candidate c1, Candidate c2) {
@@ -866,7 +883,8 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
                         }
                     });
                     
-                    // Limit to top 10 for chart
+    
+                    
                     int chartLimit = Math.min(10, chartCandidates.size());
                     int maxChartVotes = 0;
                     for (int i = 0; i < chartLimit; i++) {
@@ -898,18 +916,10 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             </div>
             <% } %>
 
-            <!-- Export Options -->
-            <div class="export-buttons">
-                <button class="export-btn print" onclick="window.print()">
-                    📄 Print Results
-                </button>
-                <a href="export_results.jsp?electionId=<%= selectedElectionId %>" class="export-btn">
-                    📥 Export as PDF
-                </a>
-            </div>
+ 
 
             <% } else { %>
-            <!-- No Candidates -->
+            <!-- apa saya buat ini huhuhu -->
             <div class="card">
                 <div class="no-data">
                     No candidates registered for this election yet.
@@ -918,14 +928,14 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
             <% } %>
 
             <% } else if (allElections.isEmpty()) { %>
-            <!-- No Elections -->
+
             <div class="card">
                 <div class="no-data">
                     No elections found in the system. Create elections first to view results.
                 </div>
             </div>
             <% } else { %>
-            <!-- No Election Selected -->
+
             <div class="card">
                 <div class="no-data">
                     Please select an election from the dropdown above to view results.
@@ -936,29 +946,16 @@ try { if (conn != null) conn.close(); } catch (Exception e) {}
     </div>
 
     <script>
-        // Auto-refresh for ongoing elections
+
+
         <% if (selectedElection != null && "ONGOING".equals(selectedElection.getStatus())) { %>
         setTimeout(function() {
-            // Refresh every 30 seconds for ongoing elections
+
+
             window.location.reload();
         }, 30000);
         <% } %>
 
-        // Print function
-        function printResults() {
-            window.print();
-        }
-
-        // Confirm before exporting
-        document.querySelectorAll('.export-btn').forEach(btn => {
-            if (!btn.classList.contains('print')) {
-                btn.addEventListener('click', function(e) {
-                    if (!confirm('Export election results?')) {
-                        e.preventDefault();
-                    }
-                });
-            }
-        });
     </script>
 </body>
 </html>

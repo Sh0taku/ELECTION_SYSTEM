@@ -126,8 +126,7 @@ public class ElectionDAO {
         }
         return election;
     }
-    
-    // Create new election for admin
+
     public boolean createElection(Election election) {
         String sql = "INSERT INTO elections (title, description, start_date, end_date, status) VALUES (?, ?, ?, ?, ?)";
         
@@ -148,7 +147,7 @@ public class ElectionDAO {
         }
     }
     
-    // Update election status
+
     public boolean updateElectionStatus(int electionId, String status) {
         String sql = "UPDATE elections SET status=? WHERE election_id=?";
         
@@ -166,7 +165,7 @@ public class ElectionDAO {
         }
     }
     
-    // Get upcoming elections
+
     public List<Election> getUpcomingElections() {
         List<Election> elections = new ArrayList<>();
         String sql = "SELECT * FROM elections WHERE status='UPCOMING' ORDER BY start_date";
@@ -192,7 +191,7 @@ public class ElectionDAO {
         return elections;
     }
     
-    // Get ended elections
+
     public List<Election> getEndedElections() {
         List<Election> elections = new ArrayList<>();
         String sql = "SELECT * FROM elections WHERE status='ENDED' ORDER BY end_date DESC";

@@ -32,7 +32,7 @@ public class StudentRegisterServlet extends HttpServlet {
         student.setEmail(email);
         student.setPassword(password);
         student.setFaculty(faculty);
-        student.setHasVoted(false); // New students haven't voted yet
+        student.setHasVoted(false);
         
    
         StudentDAO studentDAO = new StudentDAO();

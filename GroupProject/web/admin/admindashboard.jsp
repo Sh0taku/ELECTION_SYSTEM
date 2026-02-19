@@ -1,8 +1,3 @@
-<%--
-Document: admindashboard
-Created on: Jan 11, 2026
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.election.beans.Admin" %>
 <%@page import="com.election.dao.StudentDAO" %>
@@ -12,7 +7,7 @@ Created on: Jan 11, 2026
 <%@page import="com.election.beans.Candidate" %>
 <%@page import="java.util.*" %>
 <%
-// Check admin session
+
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -23,11 +18,12 @@ StudentDAO studentDAO = new StudentDAO();
 ElectionDAO electionDAO = new ElectionDAO();
 CandidateDAO candidateDAO = new CandidateDAO();
 
-// Get data
+
 int totalStudents = studentDAO.getTotalStudents();
 List allElections = electionDAO.getAllElections();
 
-// Count elections
+
+
 int ongoing = 0, upcoming = 0, ended = 0;
 Election ongoingElection = null;
 
@@ -44,7 +40,8 @@ for (int i = 0; i < allElections.size(); i++) {
     }
 }
 
-// Get candidates for ongoing election
+
+
 List candidates = new ArrayList();
 int totalVotes = 0;
 
@@ -62,7 +59,8 @@ if (ongoingElection != null) {
 <head>
     <title>Admin Dashboard - UITM Election System</title>
     <style>
-        /* Updated CSS to match studenttab.jsp layout */
+ 
+        
         * {
             margin: 0;
             padding: 0;
@@ -76,7 +74,8 @@ if (ongoingElection != null) {
             height: 100vh;
         }
 
-        /* Left Navigation Panel - Matching studenttab.jsp */
+
+        
         .nav-panel {
             width: 250px;
             background-color: #112D4E;
@@ -120,14 +119,16 @@ if (ongoingElection != null) {
             color: white;
         }
 
-        /* Main Content Area - Matching studenttab.jsp */
+
+        
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header - Matching studenttab.jsp */
+
+        
         .top-header {
             background-color: white;
             padding: 15px 30px;
@@ -156,14 +157,16 @@ if (ongoingElection != null) {
             background-color: #112D4E;
         }
 
-        /* Dashboard Content */
+ 
+        
         .dashboard-content {
             padding: 30px;
             overflow-y: auto;
             flex: 1;
         }
 
-        /* Cards */
+
+        
         .card {
             background: white;
             border-radius: 10px;
@@ -180,7 +183,7 @@ if (ongoingElection != null) {
             padding-bottom: 10px;
         }
 
-        /* Stats */
+     
         .stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -208,7 +211,8 @@ if (ongoingElection != null) {
             font-size: 14px;
         }
 
-        /* Tables */
+   
+        
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -234,7 +238,8 @@ if (ongoingElection != null) {
             background: #F9F7F7;
         }
 
-        /* Status badges */
+ 
+        
         .badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -261,7 +266,8 @@ if (ongoingElection != null) {
             border: 1px solid #c62828;
         }
 
-        /* Buttons */
+   
+        
         .btn {
             display: inline-block;
             background: #3F72AF;
@@ -283,7 +289,8 @@ if (ongoingElection != null) {
             font-size: 12px;
         }
 
-        /* Welcome Section */
+    
+        
         .welcome-section {
             margin-bottom: 30px;
         }
@@ -299,7 +306,8 @@ if (ongoingElection != null) {
             font-size: 16px;
         }
 
-        /* System Info */
+  
+        
         .info-box {
             background-color: #F9F7F7;
             padding: 15px;
@@ -312,7 +320,8 @@ if (ongoingElection != null) {
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel - Matching studenttab.jsp -->
+
+    
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -331,23 +340,28 @@ if (ongoingElection != null) {
         </div>
     </div>
 
-    <!-- Main Content - Matching studenttab.jsp -->
+
+       
     <div class="main-content">
-        <!-- Top Header - Matching studenttab.jsp -->
+
+        
         <div class="top-header">
             <div class="page-title">Admin Dashboard</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Dashboard Content -->
+   
+        
         <div class="dashboard-content">
-            <!-- Welcome Section -->
+          
+            
             <div class="welcome-section">
                 <h1 class="welcome-title">Welcome, <%= admin.getUsername() %>!</h1>
                 <p class="welcome-subtitle">UITM Election System Administration Panel</p>
             </div>
 
-            <!-- Quick Stats -->
+        
+                
             <div class="stats">
                 <div class="stat-box">
                     <div class="stat-number"><%= totalStudents %></div>
@@ -363,7 +377,8 @@ if (ongoingElection != null) {
                 </div>
             </div>
 
-            <!-- Ongoing Election -->
+      
+                    
             <% if (ongoingElection != null) { %>
             <div class="card">
                 <h2>Current Election: <%= ongoingElection.getTitle() %></h2>
@@ -405,7 +420,8 @@ if (ongoingElection != null) {
             </div>
             <% } %>
 
-            <!-- All Elections -->
+       
+            
             <div class="card">
                 <h2>All Elections</h2>
                 <% if (!allElections.isEmpty()) { %>
@@ -450,7 +466,9 @@ if (ongoingElection != null) {
                 <% } %>
             </div>
 
-            <!-- Quick Actions -->
+        
+            
+            
             <div class="card">
                 <h2>Quick Actions</h2>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
@@ -461,7 +479,7 @@ if (ongoingElection != null) {
                 </div>
             </div>
 
-            <!-- System Info -->
+          
             <div class="info-box">
                 <strong>System Information:</strong><br>
                 Server Time: <%= new java.util.Date() %> | 

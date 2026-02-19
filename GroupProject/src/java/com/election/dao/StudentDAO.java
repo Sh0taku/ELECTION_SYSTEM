@@ -30,7 +30,7 @@ public int getTotalStudents() {
     }
     return 0;
 }
-    // Login student
+ 
     public Student login(String studentId, String password) {
         Student student = null;
         String sql = "SELECT * FROM students WHERE student_id=? AND password=?";
@@ -50,7 +50,7 @@ public int getTotalStudents() {
     student.setEmail(rs.getString("email"));
     student.setFaculty(rs.getString("faculty"));
     student.setHasVoted(rs.getInt("has_voted") == 1);
-    student.setCandidateStatus(rs.getString("candidate_status"));  // ADD THIS LINE
+    student.setCandidateStatus(rs.getString("candidate_status")); 
 }
             
         } catch (SQLException e) {
@@ -59,7 +59,7 @@ public int getTotalStudents() {
         return student;
     }
     
-    // Register new student
+
     public boolean register(Student student) {
     String sql = "INSERT INTO students (student_id, name, password, email, faculty, has_voted) VALUES (?, ?, ?, ?, ?, ?)";
     

@@ -13,7 +13,7 @@ public class VoteDAO {
     
     
     
-    // Check if student has already voted in an election
+
     public boolean hasStudentVoted(String studentId, int electionId) {
     String sql = "SELECT vote_id FROM votes WHERE student_id = ? AND election_id = ?";
     
@@ -30,7 +30,7 @@ public class VoteDAO {
         return false;
     }
 }
-    // Add this method to VoteDAO class:
+    
 public List<Vote> getVotingHistory(String studentId) {
     List<Vote> votes = new ArrayList<>();
     String sql = "SELECT * FROM votes WHERE student_id = ? ORDER BY vote_time DESC";
@@ -56,7 +56,7 @@ public List<Vote> getVotingHistory(String studentId) {
     }
     return votes;
 }
-    // Record a vote
+
 
     /**
      *
@@ -67,29 +67,28 @@ public boolean recordVote(String studentId, int electionId, int candidateId) {
     Connection conn = null;
     try {
         conn = DBConnection.getConnection();
-        conn.setAutoCommit(false); // Start transaction
+        conn.setAutoCommit(false); 
         
-        // 1. Insert vote into votes table
+
         String sql1 = "INSERT INTO votes (student_id, election_id, candidate_id, vote_time) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
         PreparedStatement pstmt1 = conn.prepareStatement(sql1);
         pstmt1.setString(1, studentId);
         pstmt1.setInt(2, electionId);
         pstmt1.setInt(3, candidateId);
         int rows1 = pstmt1.executeUpdate();
-        
-        // 2. Update candidate's vote count
+
         String sql2 = "UPDATE candidates SET vote_count = vote_count + 1 WHERE candidate_id = ?";
         PreparedStatement pstmt2 = conn.prepareStatement(sql2);
         pstmt2.setInt(1, candidateId);
         int rows2 = pstmt2.executeUpdate();
         
-        // 3. Update student's has_voted status for this election
+ 
         String sql3 = "UPDATE students SET has_voted = 1 WHERE student_id = ?";
         PreparedStatement pstmt3 = conn.prepareStatement(sql3);
         pstmt3.setString(1, studentId);
         int rows3 = pstmt3.executeUpdate();
         
-        conn.commit(); // Commit transaction
+        conn.commit(); 
         return (rows1 > 0 && rows2 > 0);
         
     } catch (SQLException e) {
@@ -97,7 +96,7 @@ public boolean recordVote(String studentId, int electionId, int candidateId) {
         e.printStackTrace();
         if (conn != null) {
             try {
-                conn.rollback(); // Rollback on error
+                conn.rollback(); 
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -140,7 +139,8 @@ public boolean recordVote(String studentId, int electionId, int candidateId) {
         }
         return 0;
     }
-    // Add to VoteDAO.java
+
+    
 public List<Vote> getAllVotesWithDetails() {
     List<Vote> votes = new ArrayList<>();
     String sql = "SELECT v.*, s.NAME as STUDENT_NAME, c.CANDIDATE_NAME, e.TITLE as ELECTION_TITLE " +

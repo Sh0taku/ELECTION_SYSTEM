@@ -14,7 +14,7 @@ Document: admintab
 <%@page import="java.sql.*" %>
 <%@page import="com.election.dao.DBConnection" %>
 <%
-// Check admin session
+
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -24,7 +24,7 @@ if (admin == null) {
 String message = "";
 String messageType = "";
 
-// Handle CRUD operations
+
 String action = request.getParameter("action");
 String adminId = request.getParameter("adminId");
 
@@ -38,7 +38,7 @@ if (action != null) {
         conn = DBConnection.getConnection();
         
         if ("delete".equals(action) && adminId != null) {
-            // DELETE ADMIN (prevent deleting yourself)
+
             if (adminId.equals(admin.getAdminId())) {
                 message = "You cannot delete your own account!";
                 messageType = "error";
@@ -55,18 +55,18 @@ if (action != null) {
             }
             
         } else if ("add".equals(action)) {
-            // ADD NEW ADMIN
+
             String newAdminId = request.getParameter("adminId");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String confirmPassword = request.getParameter("confirmPassword");
             
-            // Check if passwords match
+
             if (!password.equals(confirmPassword)) {
                 message = "Passwords do not match!";
                 messageType = "error";
             } else {
-                // Check if admin already exists
+ 
                 String checkSql = "SELECT ADMIN_ID FROM ADMIN WHERE ADMIN_ID = ? OR USERNAME = ?";
                 pstmt = conn.prepareStatement(checkSql);
                 pstmt.setString(1, newAdminId);
@@ -92,20 +92,18 @@ if (action != null) {
             }
             
         } else if ("update".equals(action)) {
-            // UPDATE ADMIN
+   
             String updateAdminId = request.getParameter("adminId");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             
             if (password != null && !password.trim().isEmpty()) {
-                // Update with password
                 String updateSql = "UPDATE ADMIN SET USERNAME = ?, PASSWORD = ? WHERE ADMIN_ID = ?";
                 pstmt = conn.prepareStatement(updateSql);
                 pstmt.setString(1, username);
                 pstmt.setString(2, password);
                 pstmt.setString(3, updateAdminId);
             } else {
-                // Update without password
                 String updateSql = "UPDATE ADMIN SET USERNAME = ? WHERE ADMIN_ID = ?";
                 pstmt = conn.prepareStatement(updateSql);
                 pstmt.setString(1, username);
@@ -118,7 +116,6 @@ if (action != null) {
                 messageType = "success";
             }
         } else if ("resetPassword".equals(action) && adminId != null) {
-            // RESET PASSWORD
             String newPassword = request.getParameter("newPassword");
             String confirmPassword = request.getParameter("confirmPassword");
             
@@ -150,14 +147,14 @@ if (action != null) {
     }
 }
 
-// Fetch admins for display
+
 List<Admin> admins = new ArrayList<Admin>();
 
 try {
     conn = DBConnection.getConnection();
     stmt = conn.createStatement();
     
-    // Get all admins
+
     String adminSql = "SELECT * FROM ADMIN ORDER BY ADMIN_ID";
     rs = stmt.executeQuery(adminSql);
     
@@ -186,7 +183,7 @@ try {
 <head>
     <title>Manage Admins - UITM Election System</title>
     <style>
-        /* Same CSS structure */
+
         * {
             margin: 0;
             padding: 0;
@@ -200,7 +197,7 @@ try {
             height: 100vh;
         }
 
-        /* Left Navigation Panel */
+
         .nav-panel {
             width: 250px;
             background-color: #112D4E;
@@ -244,14 +241,12 @@ try {
             color: white;
         }
 
-        /* Main Content Area */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header */
         .top-header {
             background-color: white;
             padding: 15px 30px;
@@ -280,14 +275,13 @@ try {
             background-color: #112D4E;
         }
 
-        /* Management Content */
         .management-content {
             padding: 30px;
             overflow-y: auto;
             flex: 1;
         }
 
-        /* Message Alert */
+
         .message-alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -307,7 +301,7 @@ try {
             border: 1px solid #c62828;
         }
 
-        /* Action Bar */
+
         .action-bar {
             background-color: white;
             padding: 20px;
@@ -360,7 +354,7 @@ try {
             background-color: #1b5e20;
         }
 
-        /* Data Table */
+
         .data-table {
             width: 100%;
             background-color: white;
@@ -455,7 +449,7 @@ try {
             background-color: #f57c00;
         }
 
-        /* Current user indicator */
+
         .current-user {
             background-color: #f0f7ff;
             border-left: 4px solid #3F72AF;
@@ -480,7 +474,7 @@ try {
             color: #3F72AF;
         }
 
-        /* Modal Styles */
+    
         .modal {
             display: none;
             position: fixed;
@@ -575,7 +569,8 @@ try {
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+
+    
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -594,15 +589,14 @@ try {
         </div>
     </div>
 
-    <!-- Main Content -->
+
     <div class="main-content">
-        <!-- Top Header -->
+
         <div class="top-header">
             <div class="page-title">Manage Admin Accounts</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Management Content -->
         <div class="management-content">
             <% if (!message.isEmpty()) { %>
             <div class="message-alert <%= messageType %>">
@@ -610,7 +604,6 @@ try {
             </div>
             <% } %>
 
-            <!-- Action Bar -->
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" class="search-input" placeholder="Search admins..." id="searchInput">
@@ -619,7 +612,6 @@ try {
                 <button class="add-btn" onclick="openAddModal()">+ Add New Admin</button>
             </div>
 
-            <!-- Data Table -->
             <div class="data-table">
                 <div class="table-header">
                     <div class="table-title">Admin Accounts (<%= admins.size() %> admins)</div>
@@ -683,7 +675,7 @@ try {
         </div>
     </div>
 
-    <!-- Add/Edit Admin Modal -->
+
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title" id="modalTitle">Add New Admin</h2>
@@ -757,7 +749,6 @@ try {
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Confirm Delete</h2>
@@ -777,7 +768,7 @@ try {
     </div>
 
     <script>
-        // Modal functions
+
         function openAddModal() {
             document.getElementById('modalTitle').textContent = 'Add New Admin';
             document.getElementById('actionType').value = 'add';
@@ -830,7 +821,6 @@ try {
             document.getElementById('deleteModal').style.display = 'none';
         }
 
-        // Search function
         function searchAdmins() {
             var searchTerm = document.getElementById('searchInput').value.toLowerCase();
             var rows = document.getElementById('adminTableBody').getElementsByTagName('tr');
@@ -851,7 +841,6 @@ try {
             }
         }
 
-        // Form validation
         document.getElementById('adminForm').addEventListener('submit', function(e) {
             var adminId = document.getElementById('adminIdInput').value;
             var username = document.getElementById('username').value;
@@ -863,8 +852,7 @@ try {
                 alert('Please fill in all required fields!');
                 return false;
             }
-            
-            // For new admin, password is required
+
             if (document.getElementById('actionType').value === 'add') {
                 if (!password.trim() || password.length < 6) {
                     e.preventDefault();
@@ -901,7 +889,7 @@ try {
             return true;
         });
 
-        // Close modals when clicking outside
+
         window.onclick = function(event) {
             var adminModal = document.getElementById('adminModal');
             var passwordModal = document.getElementById('passwordModal');

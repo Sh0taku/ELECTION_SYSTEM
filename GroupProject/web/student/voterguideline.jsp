@@ -301,7 +301,7 @@
                 </div>
                 
                 <div class="important-note">
-                    <div class="note-title">📝 IMPORTANT NOTE</div>
+                    <div class="note-title"> IMPORTANT NOTE</div>
                     <p style="color: #112D4E; line-height: 1.6;">
                         If you encounter any technical issues during voting:<br>
                         1. Contact Election Technical Support immediately<br>

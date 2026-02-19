@@ -46,7 +46,7 @@ public class VoteServlet extends HttpServlet {
                 student.setHasVoted(true);
                 session.setAttribute("student", student);
 
-                response.sendRedirect("student/thankyou.jsp");
+                response.sendRedirect("student/thankyou.jsp?candidateId=" + candidateId);
             } else {
                 request.setAttribute("errorMessage", "Failed to record vote. Please try again.");
                 request.getRequestDispatcher("student/vote.jsp").forward(request, response);

@@ -10,7 +10,7 @@ Document: candidatetab
 <%@page import="java.sql.*" %>
 <%@page import="com.election.dao.DBConnection" %>
 <%
-// Check admin session
+
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -20,7 +20,7 @@ if (admin == null) {
 String message = "";
 String messageType = "";
 
-// Handle CRUD operations
+
 String action = request.getParameter("action");
 String candidateIdStr = request.getParameter("candidateId");
 
@@ -34,7 +34,6 @@ if (action != null) {
         conn = DBConnection.getConnection();
         
         if ("delete".equals(action) && candidateIdStr != null) {
-            // DELETE CANDIDATE
             int candidateId = Integer.parseInt(candidateIdStr);
             String sql = "DELETE FROM CANDIDATES WHERE CANDIDATE_ID = ?";
             pstmt = conn.prepareStatement(sql);
@@ -49,15 +48,15 @@ if (action != null) {
                 messageType = "error";
             }
             
+            // addnew candidatee
         } else if ("add".equals(action)) {
-            // ADD NEW CANDIDATE
             String studentId = request.getParameter("studentId");
             String electionIdStr = request.getParameter("electionId");
             String candidateName = request.getParameter("candidateName");
             String position = request.getParameter("position");
             String manifesto = request.getParameter("manifesto");
             
-            // Check if student exists - FIXED: Using uppercase column names
+            //cehcking students exitance
             String checkStudentSql = "SELECT STUDENT_ID FROM STUDENTS WHERE STUDENT_ID = ?";
             pstmt = conn.prepareStatement(checkStudentSql);
             pstmt.setString(1, studentId);
@@ -67,7 +66,6 @@ if (action != null) {
                 message = "Student ID does not exist!";
                 messageType = "error";
             } else {
-                // Insert candidate - FIXED: Using uppercase table/column names
                 String insertSql = "INSERT INTO CANDIDATES (STUDENT_ID, ELECTION_ID, CANDIDATE_NAME, POSITION, MANIFESTO, VOTE_COUNT) VALUES (?, ?, ?, ?, ?, 0)";
                 pstmt = conn.prepareStatement(insertSql);
                 pstmt.setString(1, studentId);
@@ -81,7 +79,6 @@ if (action != null) {
                     message = "Candidate added successfully!";
                     messageType = "success";
                     
-                    // Update student's candidate status - FIXED: Using uppercase
                     String updateStatusSql = "UPDATE STUDENTS SET CANDIDATE_STATUS = 'CANDIDATE' WHERE STUDENT_ID = ?";
                     pstmt = conn.prepareStatement(updateStatusSql);
                     pstmt.setString(1, studentId);
@@ -90,7 +87,6 @@ if (action != null) {
             }
             
         } else if ("update".equals(action)) {
-            // UPDATE CANDIDATE
             String candidateId = request.getParameter("candidateId");
             String candidateName = request.getParameter("candidateName");
             String position = request.getParameter("position");
@@ -124,7 +120,8 @@ if (action != null) {
     }
 }
 
-// Fetch candidates and elections for display
+
+
 List<Candidate> candidates = new ArrayList<Candidate>();
 List<Election> elections = new ArrayList<Election>();
 
@@ -132,7 +129,8 @@ try {
     conn = DBConnection.getConnection();
     stmt = conn.createStatement();
     
-    // Get all candidates - FIXED: Using uppercase
+
+    
     String candidateSql = "SELECT * FROM CANDIDATES ORDER BY CANDIDATE_ID";
     rs = stmt.executeQuery(candidateSql);
     
@@ -148,7 +146,8 @@ try {
         candidates.add(candidate);
     }
     
-    // Get all elections - FIXED: Using uppercase
+
+    
     String electionSql = "SELECT * FROM ELECTIONS ORDER BY ELECTION_ID";
     rs = stmt.executeQuery(electionSql);
     
@@ -179,7 +178,8 @@ try {
 <head>
     <title>Manage Candidates - UITM Election System</title>
     <style>
-        /* Keep all your existing CSS styles - they're good */
+
+        
         * {
             margin: 0;
             padding: 0;
@@ -193,7 +193,8 @@ try {
             height: 100vh;
         }
 
-        /* Left Navigation Panel */
+
+        
         .nav-panel {
             width: 250px;
             background-color: #112D4E;
@@ -237,14 +238,16 @@ try {
             color: white;
         }
 
-        /* Main Content Area */
+
+        
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header */
+
+        
         .top-header {
             background-color: white;
             padding: 15px 30px;
@@ -273,14 +276,14 @@ try {
             background-color: #112D4E;
         }
 
-        /* Management Content */
+    
         .management-content {
             padding: 30px;
             overflow-y: auto;
             flex: 1;
         }
 
-        /* Message Alert */
+       
         .message-alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -300,7 +303,7 @@ try {
             border: 1px solid #c62828;
         }
 
-        /* Action Bar */
+    
         .action-bar {
             background-color: white;
             padding: 20px;
@@ -353,7 +356,9 @@ try {
             background-color: #1b5e20;
         }
 
-        /* Data Table */
+       
+        
+        
         .data-table {
             width: 100%;
             background-color: white;
@@ -451,7 +456,7 @@ try {
             color: #3F72AF;
         }
 
-        /* Modal Styles */
+     
         .modal {
             display: none;
             position: fixed;
@@ -542,7 +547,7 @@ try {
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+    
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -560,15 +565,14 @@ try {
         </div>
     </div>
 
-    <!-- Main Content -->
+  
     <div class="main-content">
-        <!-- Top Header -->
         <div class="top-header">
             <div class="page-title">Manage Candidates</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Management Content -->
+
         <div class="management-content">
             <% if (!message.isEmpty()) { %>
             <div class="message-alert <%= messageType %>">
@@ -576,7 +580,8 @@ try {
             </div>
             <% } %>
 
-            <!-- Action Bar -->
+
+            
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" class="search-input" placeholder="Search candidates..." id="searchInput">
@@ -585,7 +590,8 @@ try {
                 <button class="add-btn" onclick="openAddModal()">+ Add New Candidate</button>
             </div>
 
-            <!-- Data Table -->
+
+            
             <div class="data-table">
                 <div class="table-header">
                     <div class="table-title">Candidates List (<%= candidates.size() %> candidates)</div>
@@ -658,7 +664,7 @@ try {
         </div>
     </div>
 
-    <!-- Add/Edit Modal -->
+   
     <div id="candidateModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title" id="modalTitle">Add New Candidate</h2>
@@ -708,7 +714,7 @@ try {
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+   
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Confirm Delete</h2>

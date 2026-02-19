@@ -9,7 +9,8 @@ Document: studenttab
 <%@page import="java.sql.*" %>
 <%@page import="com.election.dao.DBConnection" %>
 <%
-// Check admin session
+
+    
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -19,7 +20,8 @@ if (admin == null) {
 String message = "";
 String messageType = "";
 
-// Handle CRUD operations
+
+
 String action = request.getParameter("action");
 String studentId = request.getParameter("studentId");
 
@@ -33,7 +35,8 @@ if (action != null) {
         conn = DBConnection.getConnection();
         
         if ("delete".equals(action) && studentId != null) {
-            // DELETE STUDENT (check if candidate first)
+    
+            
             String checkCandidate = "SELECT CANDIDATE_STATUS FROM STUDENTS WHERE STUDENT_ID = ?";
             pstmt = conn.prepareStatement(checkCandidate);
             pstmt.setString(1, studentId);
@@ -58,7 +61,6 @@ if (action != null) {
             }
             
         } else if ("add".equals(action)) {
-            // ADD NEW STUDENT
             String newStudentId = request.getParameter("studentId");
             String name = request.getParameter("name");
             String email = request.getParameter("email");
@@ -66,7 +68,6 @@ if (action != null) {
             String faculty = request.getParameter("faculty");
             String candidateStatus = request.getParameter("candidateStatus");
             
-            // Check if student already exists
             String checkSql = "SELECT STUDENT_ID FROM STUDENTS WHERE STUDENT_ID = ?";
             pstmt = conn.prepareStatement(checkSql);
             pstmt.setString(1, newStudentId);
@@ -93,7 +94,6 @@ if (action != null) {
             }
             
         } else if ("update".equals(action)) {
-            // UPDATE STUDENT
             String updateStudentId = request.getParameter("studentId");
             String name = request.getParameter("name");
             String email = request.getParameter("email");
@@ -114,7 +114,7 @@ if (action != null) {
                 messageType = "success";
             }
         } else if ("resetPassword".equals(action) && studentId != null) {
-            // RESET PASSWORD
+            
             String newPassword = request.getParameter("newPassword");
             
             String updateSql = "UPDATE STUDENTS SET PASSWORD = ? WHERE STUDENT_ID = ?";
@@ -140,14 +140,13 @@ if (action != null) {
     }
 }
 
-// Fetch students for display
 List<Student> students = new ArrayList<Student>();
 
 try {
     conn = DBConnection.getConnection();
     stmt = conn.createStatement();
     
-    // Get all students
+
     String studentSql = "SELECT * FROM STUDENTS ORDER BY STUDENT_ID";
     rs = stmt.executeQuery(studentSql);
     
@@ -581,7 +580,7 @@ try {
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -600,15 +599,16 @@ try {
         </div>
     </div>
 
-    <!-- Main Content -->
+
     <div class="main-content">
-        <!-- Top Header -->
+
+        
         <div class="top-header">
             <div class="page-title">Manage Students</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Management Content -->
+   
         <div class="management-content">
             <% if (!message.isEmpty()) { %>
             <div class="message-alert <%= messageType %>">
@@ -616,7 +616,8 @@ try {
             </div>
             <% } %>
 
-            <!-- Action Bar -->
+          
+            
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" class="search-input" placeholder="Search students..." id="searchInput">
@@ -625,7 +626,8 @@ try {
                 <button class="add-btn" onclick="openAddModal()">+ Add New Student</button>
             </div>
 
-            <!-- Data Table -->
+         
+            
             <div class="data-table">
                 <div class="table-header">
                     <div class="table-title">Students List (<%= students.size() %> students)</div>
@@ -696,7 +698,10 @@ try {
         </div>
     </div>
 
-    <!-- Add/Edit Student Modal -->
+  
+                        
+                        
+                        
     <div id="studentModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title" id="modalTitle">Add New Student</h2>
@@ -759,7 +764,8 @@ try {
         </div>
     </div>
 
-    <!-- Reset Password Modal -->
+
+                        
     <div id="passwordModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Reset Password</h2>
@@ -791,7 +797,7 @@ try {
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+ 
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Confirm Delete</h2>
@@ -811,7 +817,7 @@ try {
     </div>
 
     <script>
-        // Modal functions
+
         function openAddModal() {
             document.getElementById('modalTitle').textContent = 'Add New Student';
             document.getElementById('actionType').value = 'add';
@@ -865,7 +871,9 @@ try {
             document.getElementById('deleteModal').style.display = 'none';
         }
 
-        // Search function
+ 
+ 
+ 
         function searchStudents() {
             var searchTerm = document.getElementById('searchInput').value.toLowerCase();
             var rows = document.getElementById('studentTableBody').getElementsByTagName('tr');
@@ -886,7 +894,8 @@ try {
             }
         }
 
-        // Form validation
+ 
+ 
         document.getElementById('studentForm').addEventListener('submit', function(e) {
             var studentId = document.getElementById('studentId').value;
             var name = document.getElementById('name').value;
@@ -921,7 +930,9 @@ try {
             return true;
         });
 
-        // Close modals when clicking outside
+     
+     
+     
         window.onclick = function(event) {
             var studentModal = document.getElementById('studentModal');
             var passwordModal = document.getElementById('passwordModal');

@@ -1,7 +1,7 @@
 <%-- 
     Document   : register
     Created on : Jan 10, 2026, 12:01:36 AM
-    Author     : Emir
+    Author     : Irfannn
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,7 +13,6 @@
 <head>
     <title>Register - UITM Election System</title>
     <style>
-        /* Same CSS from login page for consistency */
         body {
             font-family: Arial, sans-serif;
             background-color: #F9F7F7;
@@ -146,7 +145,6 @@
     </style>
 </head>
 <body>
-    <!-- Header with Right-aligned Navigation -->
     <div class="header">
         <div class="title">
             <h2>UITM Election System</h2>
@@ -162,7 +160,6 @@
         </div>
     </div>
     
-    <!-- Registration Form -->
     <div class="register-container">
         <h2>Student Registration</h2>
         <p style="text-align: center; color: #3F72AF; margin-bottom: 20px;">
@@ -216,7 +213,6 @@
         </form>
     </div>
     
-    <!-- Footer -->
     <div class="footer">
         <div class="footer-content">
             <h3>UITM Election System</h3>
@@ -230,9 +226,8 @@
     </div>
     
 <script>
-    // Improved form validation
+
     function validateRegisterForm(form) {
-        // 1. Check all required fields
         const requiredInputs = form.querySelectorAll('input[required]');
         for (let input of requiredInputs) {
             if (!input.value.trim()) {
@@ -242,7 +237,7 @@
             }
         }
         
-        // 2. Check password match
+
         const password = document.querySelector('input[name="password"]').value;
         const confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
         
@@ -252,14 +247,14 @@
             return false;
         }
         
-        // 3. Check password length (optional but good)
+
         if (password.length < 6) {
             alert('Password should be at least 6 characters long.');
             document.querySelector('input[name="password"]').style.borderColor = 'red';
             return false;
         }
         
-        return true; // All good, submit form
+        return true; 
     }
 </script>
 </body>

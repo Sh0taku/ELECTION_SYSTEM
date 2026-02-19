@@ -18,7 +18,7 @@ public class Election implements Serializable {
     private String description;
     private Date startDate;
     private Date endDate;
-    private String status; // UPCOMING, ONGOING, ENDED
+    private String status; 
 
     public Election() {}
 
@@ -32,7 +32,7 @@ public class Election implements Serializable {
         this.status = status;
     }
 
-    // Constructor without dates (for backward compatibility)
+
     public Election(int electionId, String title, String description, String status) {
         this.electionId = electionId;
         this.title = title;
@@ -42,13 +42,11 @@ public class Election implements Serializable {
         this.endDate = null;
     }
 
-    // Constructor with dates only
     public Election(Date startDate, Date endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    // Getters and Setters
     public int getElectionId() {
         return electionId;
     }
@@ -97,7 +95,6 @@ public class Election implements Serializable {
         this.status = status;
     }
     
-    // Helper method for debugging
     @Override
     public String toString() {
         return "Election{" + 

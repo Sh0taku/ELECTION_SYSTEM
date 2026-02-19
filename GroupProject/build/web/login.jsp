@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.election.dao.*" %>
 <%@page import="com.election.beans.*" %>
 <%@page import="java.util.*" %>
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>UITM Election System - Login</title>
@@ -50,7 +48,7 @@
             background-color: #3F72AF;
         }
         
-        
+       
         .container {
             display: flex;
             width: 900px;
@@ -76,8 +74,7 @@
             color: #112D4E;
         }
         
-        /* Right Side -- Login Form---------------------- */
-        .right-side {
+                .right-side {
             width: 50%;
             padding: 40px;
         }
@@ -88,7 +85,7 @@
             text-align: center;
         }
         
-        /* Tab---------------------- */
+       
         .tabs {
             display: flex;
             margin-bottom: 20px;
@@ -109,7 +106,7 @@
             color: white;
         }
         
-        /* Form----------------- */
+
         .form {
             display: none;
         }
@@ -137,7 +134,7 @@
             font-size: 16px;
         }
         
-        /* Butang------------------ */
+        
         .login-button {
             width: 100%;
             padding: 12px;
@@ -170,7 +167,7 @@
             color: white;
         }
         
-        /* kaki */
+        
         .footer {
             background-color: #112D4E;
             color: white;
@@ -215,8 +212,9 @@
         </div>
     </div>
     
-
+ 
     <div class="container">
+
         <div class="left-side">
             <div class="image-box">
                 <h2>UITM Election System</h2>
@@ -227,17 +225,17 @@
             </div>
         </div>
         
-        <!-- right - Login Form -->
+
         <div class="right-side">
             <h2 class="login-title">Login to Your Account</h2>
             
-            <!-- Tabs for Student/Admin -->
+           
             <div class="tabs">
                 <button class="tab active" onclick="showForm('student')">Student Login</button>
                 <button class="tab" onclick="showForm('admin')">Admin Login</button>
             </div>
             
-            <!-- Student login form -->
+            
             <form id="studentForm" class="form active" action="StudentLoginServlet" method="POST" onsubmit="return checkForm(this)">
                 <div class="input-group">
                     <label>Student ID:</label>
@@ -252,7 +250,7 @@
                 <button type="submit" class="login-button">Login as Student</button>
             </form>
             
-            <!-- Admin login form -->
+            
             <form id="adminForm" class="form" action="AdminLoginServlet2" method="POST" onsubmit="return checkForm(this)">
                 <div class="input-group">
                     <label>Username:</label>
@@ -267,14 +265,14 @@
                 <button type="submit" class="login-button">Login as Admin</button>
             </form>
             
-            <!-- register button -->
+           
             <button class="register-button" onclick="window.location.href='register.jsp'">
                 New Student? Click to Register
             </button>
         </div>
     </div>
     
-    <!-- Kaki -->
+  
     <div class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -291,14 +289,13 @@
             </div>
         </div>
         
-        <div class="copyright">
+        
             <p>&copy; 2024 UITM Election System. CSC584 Group Project.</p>
             <p>All rights reserved.</p>
-        </div>
+        
     </div>
     
     <script>
-        
 function checkForm(form) {
     const inputs = form.querySelectorAll('input[required]');
     

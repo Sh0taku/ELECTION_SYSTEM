@@ -1,7 +1,7 @@
 <%-- 
     Document   : about
     Created on : Jan 3, 2026, 10:35:35 PM
-    Author     : Emir
+    Author     :Habll
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -10,7 +10,7 @@
 <head>
     <title>About - UITM Election System</title>
     <style>
-        /* Same CSS from login page */
+
         body {
             font-family: Arial, sans-serif;
             background-color: #F9F7F7;
@@ -52,7 +52,7 @@
             background-color: #3F72AF;
         }
         
-        /* About Content */
+
         .about-container {
             max-width: 900px;
             margin: 40px auto;
@@ -104,7 +104,7 @@
             margin-top: 0;
         }
         
-        /* Footer */
+
         .footer {
             background-color: #112D4E;
             color: white;
@@ -141,7 +141,7 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+
     <div class="header">
         <div class="title">
             <h2>UITM Election System</h2>
@@ -157,7 +157,7 @@
         </div>
     </div>
     
-    <!-- About Content -->
+
     <div class="about-container">
         <h2 class="about-title">About UITM Election System</h2>
         
@@ -209,7 +209,7 @@
         </div>
     </div>
     
-    <!-- Footer -->
+
     <div class="footer">
         <div class="footer-content">
             <h3>UITM Election System</h3>

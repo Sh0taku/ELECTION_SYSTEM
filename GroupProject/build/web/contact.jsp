@@ -42,7 +42,7 @@
             background-color: #3F72AF;
         }
         
-        /* Main Content */
+
         .main {
             max-width: 800px;
             margin: 30px auto;
@@ -97,7 +97,7 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+
     <div class="header">
         <div class="title">
             <h2>UITM Election System</h2>
@@ -113,7 +113,7 @@
         </div>
     </div>
     
-    <!-- Main Content -->
+
     <div class="main">
         <h2>Contact Us</h2>
         
@@ -142,7 +142,7 @@
         <a href="login.jsp" class="back-btn">Back to Home</a>
     </div>
     
-    <!-- Footer -->
+
     <div class="footer">
         <p>UITM Election System</p>
         <p>&copy; 2024 CSC584 Group Project</p>

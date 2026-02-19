@@ -1,13 +1,3 @@
-<%-- 
-    Document   : electiontab
-    Created on : Jan 13, 2026, 9:40:05 AM
-    Author     : Emir
---%>
-
-<%--
-Document: electiontab
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.election.beans.Admin" %>
 <%@page import="com.election.beans.Election" %>
@@ -16,7 +6,7 @@ Document: electiontab
 <%@page import="com.election.dao.DBConnection" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%
-// Check admin session
+
 Admin admin = (Admin) session.getAttribute("admin");
 if (admin == null) {
     response.sendRedirect("../login.jsp");
@@ -26,7 +16,7 @@ if (admin == null) {
 String message = "";
 String messageType = "";
 
-// Handle CRUD operations
+
 String action = request.getParameter("action");
 String electionIdStr = request.getParameter("electionId");
 
@@ -40,10 +30,10 @@ if (action != null) {
         conn = DBConnection.getConnection();
         
         if ("delete".equals(action) && electionIdStr != null) {
-            // DELETE ELECTION (only if no candidates/votes)
+
             int electionId = Integer.parseInt(electionIdStr);
             
-            // Check if election has candidates
+
             String checkCandidates = "SELECT COUNT(*) FROM CANDIDATES WHERE ELECTION_ID = ?";
             pstmt = conn.prepareStatement(checkCandidates);
             pstmt.setInt(1, electionId);
@@ -67,7 +57,7 @@ if (action != null) {
             }
             
         } else if ("add".equals(action)) {
-            // ADD NEW ELECTION
+
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String startDate = request.getParameter("startDate");
@@ -89,7 +79,7 @@ if (action != null) {
             }
             
         } else if ("update".equals(action)) {
-            // UPDATE ELECTION
+
             String electionId = request.getParameter("electionId");
             String title = request.getParameter("title");
             String description = request.getParameter("description");
@@ -112,7 +102,7 @@ if (action != null) {
                 messageType = "success";
             }
         } else if ("changeStatus".equals(action) && electionIdStr != null) {
-            // CHANGE ELECTION STATUS
+
             int electionId = Integer.parseInt(electionIdStr);
             String newStatus = request.getParameter("status");
             
@@ -143,7 +133,7 @@ if (action != null) {
     }
 }
 
-// Fetch elections for display
+
 List<Election> elections = new ArrayList<Election>();
 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -151,7 +141,7 @@ try {
     conn = DBConnection.getConnection();
     stmt = conn.createStatement();
     
-    // Get all elections
+
     String electionSql = "SELECT * FROM ELECTIONS ORDER BY ELECTION_ID";
     rs = stmt.executeQuery(electionSql);
     
@@ -182,7 +172,7 @@ try {
 <head>
     <title>Manage Elections - UITM Election System</title>
     <style>
-        /* Same CSS as candidatetab */
+
         * {
             margin: 0;
             padding: 0;
@@ -196,7 +186,7 @@ try {
             height: 100vh;
         }
 
-        /* Left Navigation Panel */
+
         .nav-panel {
             width: 250px;
             background-color: #112D4E;
@@ -240,14 +230,14 @@ try {
             color: white;
         }
 
-        /* Main Content Area */
+
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header */
+
         .top-header {
             background-color: white;
             padding: 15px 30px;
@@ -276,14 +266,14 @@ try {
             background-color: #112D4E;
         }
 
-        /* Management Content */
+
         .management-content {
             padding: 30px;
             overflow-y: auto;
             flex: 1;
         }
 
-        /* Message Alert */
+
         .message-alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -303,7 +293,7 @@ try {
             border: 1px solid #c62828;
         }
 
-        /* Action Bar */
+
         .action-bar {
             background-color: white;
             padding: 20px;
@@ -450,7 +440,10 @@ try {
             background-color: #f57c00;
         }
 
-        /* Status badges */
+        
+        
+        
+        
         .badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -477,6 +470,7 @@ try {
             border: 1px solid #c62828;
         }
 
+        
         .description-cell {
             max-width: 300px;
             overflow: hidden;
@@ -490,7 +484,9 @@ try {
             color: #3F72AF;
         }
 
-        /* Modal Styles */
+
+        
+        
         .modal {
             display: none;
             position: fixed;
@@ -588,7 +584,8 @@ try {
             background-color: #cccccc;
         }
 
-        /* Status Modal */
+        
+        
         .status-options {
             display: flex;
             gap: 10px;
@@ -618,7 +615,10 @@ try {
     </style>
 </head>
 <body>
-    <!-- Left Navigation Panel -->
+
+    
+    
+    
     <div class="nav-panel">
         <div class="admin-info">
             <div class="admin-name"><%= admin.getUsername() %></div>
@@ -636,15 +636,19 @@ try {
         </div>
     </div>
 
-    <!-- Main Content -->
+
+        
+        
     <div class="main-content">
-        <!-- Top Header -->
+
+        
         <div class="top-header">
             <div class="page-title">Manage Elections</div>
             <button class="logout-btn" onclick="if(confirm('Logout?')) window.location.href='../LogoutServlet'">Logout</button>
         </div>
 
-        <!-- Management Content -->
+
+        
         <div class="management-content">
             <% if (!message.isEmpty()) { %>
             <div class="message-alert <%= messageType %>">
@@ -652,7 +656,8 @@ try {
             </div>
             <% } %>
 
-            <!-- Action Bar -->
+
+            
             <div class="action-bar">
                 <div class="search-box">
                     <input type="text" class="search-input" placeholder="Search elections..." id="searchInput">
@@ -661,7 +666,9 @@ try {
                 <button class="add-btn" onclick="openAddModal()">+ Create New Election</button>
             </div>
 
-            <!-- Data Table -->
+
+            
+            
             <div class="data-table">
                 <div class="table-header">
                     <div class="table-title">Elections List (<%= elections.size() %> elections)</div>
@@ -742,7 +749,9 @@ try {
         </div>
     </div>
 
-    <!-- Add/Edit Election Modal -->
+
+                        
+                        
     <div id="electionModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title" id="modalTitle">Create New Election</h2>
@@ -790,7 +799,7 @@ try {
         </div>
     </div>
 
-    <!-- Change Status Modal -->
+
     <div id="statusModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Change Election Status</h2>
@@ -826,7 +835,8 @@ try {
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+                        
+                        
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Confirm Delete</h2>
@@ -846,13 +856,13 @@ try {
     </div>
 
     <script>
-        // Modal functions
+
         function openAddModal() {
             document.getElementById('modalTitle').textContent = 'Create New Election';
             document.getElementById('actionType').value = 'add';
             document.getElementById('electionForm').reset();
             
-            // Set default dates (today and tomorrow)
+  
             var today = new Date().toISOString().split('T')[0];
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -882,7 +892,7 @@ try {
                 'Select new status for election:<br><strong>' + electionTitle + '</strong>';
             document.getElementById('statusElectionId').value = electionId;
             
-            // Reset and select current status
+  
             var options = document.querySelectorAll('.status-option');
             options.forEach(option => {
                 option.classList.remove('selected');
@@ -929,7 +939,7 @@ try {
             document.getElementById('deleteModal').style.display = 'none';
         }
 
-        // Search function
+
         function searchElections() {
             var searchTerm = document.getElementById('searchInput').value.toLowerCase();
             var rows = document.getElementById('electionTableBody').getElementsByTagName('tr');
@@ -950,7 +960,7 @@ try {
             }
         }
 
-        // Form validation
+
         document.getElementById('electionForm').addEventListener('submit', function(e) {
             var title = document.getElementById('title').value;
             var startDate = document.getElementById('startDate').value;
@@ -977,7 +987,7 @@ try {
             return true;
         });
 
-        // Close modals when clicking outside
+
         window.onclick = function(event) {
             var electionModal = document.getElementById('electionModal');
             var statusModal = document.getElementById('statusModal');
